@@ -33,16 +33,27 @@ public class EnrollmentRepo implements ICRUDRepo<Enrollment> {
 
     @Override
     public Enrollment create(Enrollment data) {
-        return null;
+        enrollmentsList.add(data);
+        return data;
     }
 
     @Override
     public Enrollment update(int id, Enrollment data) {
+        Enrollment e = findById(id);
+        if (e != null) {
+            enrollmentsList.set(enrollmentsList.indexOf(e), data);
+            return data;
+        }
         return null;
     }
 
     @Override
     public Enrollment deleteById(int id) {
+        Enrollment e = findById(id);
+        if (e != null) {
+            enrollmentsList.remove(e);
+            return e;
+        }
         return null;
     }
 }

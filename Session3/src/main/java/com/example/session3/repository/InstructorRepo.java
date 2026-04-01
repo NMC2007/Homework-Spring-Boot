@@ -33,16 +33,27 @@ public class InstructorRepo implements ICRUDRepo<Instructor> {
 
     @Override
     public Instructor create(Instructor data) {
-        return null;
+        instructorsList.add(data);
+        return data;
     }
 
     @Override
     public Instructor update(int id, Instructor data) {
+        Instructor i = findById(id);
+        if (i != null) {
+            instructorsList.set(instructorsList.indexOf(i), data);
+            return data;
+        }
         return null;
     }
 
     @Override
     public Instructor deleteById(int id) {
+        Instructor i = findById(id);
+        if (i != null) {
+            instructorsList.remove(i);
+            return i;
+        }
         return null;
     }
 }
