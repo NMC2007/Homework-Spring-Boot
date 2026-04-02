@@ -1,4 +1,4 @@
-package com.example.session4.model.dto;
+package com.example.session4.model.dto.instructorDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,9 @@
 package com.example.session4.Service;
 
 import com.example.session4.Repository.InstructorRepo;
-import com.example.session4.model.dto.InstructorCreateRequest;
+import com.example.session4.model.dto.instructorDTO.InstructorCreateRequest;
+import com.example.session4.model.dto.instructorDTO.InstructorOutPutDTO;
+import com.example.session4.model.entity.Course;
 import com.example.session4.model.entity.Instructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,22 @@ public class InstructorService {
         return instructorRepo.findAll();
     }
 
+    public List<InstructorOutPutDTO> getInstructors() {
+        List<Instructor> instructors = findAll();
+        return instructors.stream()
+                .map(this::mapToDto).toList();
+
+    }
+
+    public List<InstructorOutPutDTO> findByName(String name) {
+        List<Instructor> instructors =  instructorRepo.findByName(name);
+
+        return instructors.stream()
+                .map(this::mapToDto).toList();
+    }
+
+
+
     public Instructor createInstructor(InstructorCreateRequest req) {
         Instructor instructor = new Instructor();
 
@@ -29,5 +47,21 @@ public class InstructorService {
         instructor.setEmail(req.getEmail());
 
         return instructorRepo.save(instructor);
+    }
+
+    private InstructorOutPutDTO mapToDto(Instructor entity) {
+        return InstructorOutPutDTO.builder()
+                .instructorId(entity.getInstructorId())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .courses(
+                        entity.getCourses() == null
+                                ? List.of()
+                                : entity.getCourses()
+                                .stream()
+                                .map(Course::getTile)
+                                .toList()
+                )
+                .build();
     }
 }
