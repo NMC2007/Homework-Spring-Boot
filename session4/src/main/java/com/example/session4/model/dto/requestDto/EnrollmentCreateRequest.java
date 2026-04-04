@@ -1,4 +1,4 @@
-package com.example.session4.model.dto.instructorDTO;
+package com.example.session4.model.dto.requestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class InstructorCreateRequest {
-    private String name;
-    private String email;
+public class EnrollmentCreateRequest {
+    private Long studentId;
+    private Long courseId;
 }

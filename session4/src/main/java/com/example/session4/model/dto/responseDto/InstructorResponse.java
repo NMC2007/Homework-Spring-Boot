@@ -1,4 +1,4 @@
-package com.example.session4.model.dto.instructorDTO;
+package com.example.session4.model.dto.responseDto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class InstructorOutPutDTO {
+public class InstructorResponse {
     private Long instructorId;
     private String name;
     private String email;

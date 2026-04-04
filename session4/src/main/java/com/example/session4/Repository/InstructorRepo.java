@@ -10,6 +10,4 @@ import java.util.List;
 
 @Repository
 public interface InstructorRepo extends JpaRepository<Instructor, Long> {
-    @Query(value = "from Instructor where name ilike concat('%', :key, '%') ")
-    List<Instructor> findByName(@Param("key") String name);
 }

@@ -1,15 +1,15 @@
-package com.example.session4.model.dto.courseDTO;
+package com.example.session4.model.dto.requestDto;
 
 import com.example.session4.model.entity.CourseStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
+@Data
 public class CourseCreateRequest {
     private String tile;
     private CourseStatus status;

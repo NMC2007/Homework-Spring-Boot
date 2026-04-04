@@ -1,9 +1,9 @@
 package com.example.session4.controller;
 
 import com.example.session4.Service.InstructorService;
-import com.example.session4.model.dto.instructorDTO.InstructorCreateRequest;
-import com.example.session4.model.dto.instructorDTO.InstructorOutPutDTO;
-import com.example.session4.model.entity.Instructor;
+import com.example.session4.model.dto.requestDto.InstructorCreateRequest;
+import com.example.session4.model.dto.responseDto.InstructorResponse;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,27 +17,28 @@ import java.util.List;
 public class InstructorController {
     private final InstructorService instructorService;
 
-    @GetMapping("/test")
-    public List<InstructorOutPutDTO> getInstructor() {
-        return instructorService.getInstructors();
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<?> findByName(@RequestParam String name) {
-        List<InstructorOutPutDTO> i = instructorService.findByName(name);
-
-        if (i.isEmpty()) {
+    @GetMapping
+    public ResponseEntity<?> getAllInstructor() {
+        List<InstructorResponse> insList = instructorService.getAll();
+        if (insList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(i, HttpStatus.OK);
+        return new ResponseEntity<>(insList, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createInstructor(@RequestBody InstructorCreateRequest data) {
-        Instructor i = instructorService.createInstructor(data);
-        if (i == null) {
-            return ResponseEntity.badRequest().build();
+    @GetMapping("/find-by-id")
+    public ResponseEntity<?> findInstructorById(@RequestParam Long id) {
+        try {
+            InstructorResponse ins = instructorService.findInstructorById(id);
+            return new ResponseEntity<>(ins, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(i, HttpStatus.OK);
+    }
+
+    @PostMapping("/create-instructor")
+    public ResponseEntity<?> createInstructor(@RequestBody InstructorCreateRequest req) {
+        InstructorResponse ins = instructorService.createInstructor(req);
+        return new ResponseEntity<>(ins, HttpStatus.OK);
     }
 }
