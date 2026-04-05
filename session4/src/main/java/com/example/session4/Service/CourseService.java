@@ -4,9 +4,16 @@ import com.example.session4.Repository.CourseRepo;
 import com.example.session4.Repository.InstructorRepo;
 import com.example.session4.model.dto.requestDto.CourseCreateRequest;
 import com.example.session4.model.dto.responseDto.CourseResponse;
+import com.example.session4.model.dto.responseDto.CourseResponseV2;
+import com.example.session4.model.dto.responseDto.PageResponse;
 import com.example.session4.model.entity.Course;
+import com.example.session4.model.entity.CourseStatus;
 import com.example.session4.model.entity.Instructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +31,45 @@ public class CourseService {
         return listCourse.stream().map(this::mapToDto).toList();
     }
 
+    public List<CourseResponseV2> getAllV2() {
+        List<Course> listCourse = courseRepo.findAll();
+
+        return listCourse.stream().map(this::mapToDtoV2).toList();
+    }
+
     private CourseResponse mapToDto(Course entity) {
         return CourseResponse.builder()
                 .id(entity.getId())
                 .tile(entity.getTile())
                 .status(entity.getStatus())
                 .instructor(instructorService.mapToDto(entity.getInstructor()))
+                .build();
+    }
+
+    private CourseResponseV2 mapToDtoV2(Course entity) {
+        return CourseResponseV2.builder()
+                .id(entity.getId())
+                .status(entity.getStatus())
+                .tile(entity.getTile())
+                .build();
+    }
+
+    public PageResponse<CourseResponse> getCourseByPage(int pageNumber, int pageSize, String field, String order, CourseStatus status) {
+        Sort sort = order.equalsIgnoreCase("asc")
+                ? Sort.by(field).ascending()
+                : Sort.by(field).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Course> coursePage = courseRepo.findAllByStatus(status, pageable);
+        Page<CourseResponse> page = coursePage.map(this::mapToDto);
+
+        return PageResponse.<CourseResponse>builder()
+                .items(page.getContent())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalItems(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .isLast(page.isLast())
                 .build();
     }
 

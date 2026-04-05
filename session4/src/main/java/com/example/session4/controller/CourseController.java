@@ -3,8 +3,11 @@ package com.example.session4.controller;
 import com.example.session4.Service.CourseService;
 import com.example.session4.model.dto.requestDto.CourseCreateRequest;
 import com.example.session4.model.dto.responseDto.CourseResponse;
-import com.example.session4.model.entity.Course;
+import com.example.session4.model.dto.responseDto.CourseResponseV2;
+import com.example.session4.model.dto.responseDto.PageResponse;
+import com.example.session4.model.entity.CourseStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,28 @@ public class CourseController {
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<>(listCourse,HttpStatus.OK);
+    }
+
+    @GetMapping("/v2")
+    public ResponseEntity<?> getAllCourseV2() {
+        List<CourseResponseV2> listCourse = courseService.getAllV2();
+        if (listCourse.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return new ResponseEntity<>(listCourse,HttpStatus.OK);
+    }
+
+    @GetMapping("/page-able")
+    public ResponseEntity<?> getCourseByPaginate (
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam(defaultValue = "id") String field,
+            @RequestParam(defaultValue = "ASC") String order,
+            @RequestParam(defaultValue = "ACTIVE")CourseStatus status
+
+            ) {
+        PageResponse<CourseResponse> pageCourse = courseService.getCourseByPage(pageNumber, pageSize, field, order, status);
+        return new ResponseEntity<>(pageCourse, HttpStatus.OK);
     }
 
     @PostMapping("/create-course")
