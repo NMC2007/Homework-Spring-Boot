@@ -1,7 +1,7 @@
 package com.example.session4.controller;
 
-import com.example.session4.Service.StudentEnrollmentService;
-import com.example.session4.Service.StudentService;
+import com.example.session4.service.StudentEnrollmentService;
+import com.example.session4.service.StudentService;
 import com.example.session4.model.dto.requestDto.EnrollmentCreateRequest;
 import com.example.session4.model.dto.requestDto.StudentCreateRequest;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package com.example.session4.Service;
+package com.example.session4.service;
 
-import com.example.session4.Repository.InstructorRepo;
+import com.example.session4.repository.InstructorRepo;
 import com.example.session4.model.dto.requestDto.InstructorCreateRequest;
 import com.example.session4.model.dto.responseDto.InstructorResponse;
 import com.example.session4.model.entity.Course;

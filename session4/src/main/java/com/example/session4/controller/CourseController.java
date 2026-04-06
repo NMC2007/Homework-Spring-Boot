@@ -1,13 +1,12 @@
 package com.example.session4.controller;
 
-import com.example.session4.Service.CourseService;
+import com.example.session4.service.CourseService;
 import com.example.session4.model.dto.requestDto.CourseCreateRequest;
 import com.example.session4.model.dto.responseDto.CourseResponse;
 import com.example.session4.model.dto.responseDto.CourseResponseV2;
 import com.example.session4.model.dto.responseDto.PageResponse;
 import com.example.session4.model.entity.CourseStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

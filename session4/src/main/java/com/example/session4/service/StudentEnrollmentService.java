@@ -1,15 +1,13 @@
-package com.example.session4.Service;
+package com.example.session4.service;
 
-import com.example.session4.Repository.CourseRepo;
-import com.example.session4.Repository.StudentEnrollmentRepo;
-import com.example.session4.Repository.StudentRepo;
+import com.example.session4.repository.CourseRepo;
+import com.example.session4.repository.StudentEnrollmentRepo;
+import com.example.session4.repository.StudentRepo;
 import com.example.session4.model.entity.Course;
 import com.example.session4.model.entity.Student;
 import com.example.session4.model.entity.StudentEnrollment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

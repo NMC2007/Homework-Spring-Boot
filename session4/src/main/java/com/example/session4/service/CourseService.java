@@ -1,7 +1,7 @@
-package com.example.session4.Service;
+package com.example.session4.service;
 
-import com.example.session4.Repository.CourseRepo;
-import com.example.session4.Repository.InstructorRepo;
+import com.example.session4.repository.CourseRepo;
+import com.example.session4.repository.InstructorRepo;
 import com.example.session4.model.dto.requestDto.CourseCreateRequest;
 import com.example.session4.model.dto.responseDto.CourseResponse;
 import com.example.session4.model.dto.responseDto.CourseResponseV2;
@@ -60,7 +60,7 @@ public class CourseService {
                 : Sort.by(field).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        Page<Course> coursePage = courseRepo.findAllByStatus(status, pageable);
+        Page<Course> coursePage = getCourses(status, pageable);
         Page<CourseResponse> page = coursePage.map(this::mapToDto);
 
         return PageResponse.<CourseResponse>builder()
@@ -71,6 +71,11 @@ public class CourseService {
                 .totalPages(page.getTotalPages())
                 .isLast(page.isLast())
                 .build();
+    }
+
+    private Page<Course> getCourses(CourseStatus status, Pageable pageable) {
+        Page<Course> coursePage = courseRepo.findAllByStatus(status, pageable);
+        return coursePage;
     }
 
     public Course findById(Long id) {

@@ -1,4 +1,4 @@
-package com.example.session4.Repository;
+package com.example.session4.repository;
 
 import com.example.session4.model.entity.StudentEnrollment;
 import org.springframework.data.jpa.repository.JpaRepository;

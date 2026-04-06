@@ -1,6 +1,6 @@
 package com.example.session4.controller;
 
-import com.example.session4.Service.InstructorService;
+import com.example.session4.service.InstructorService;
 import com.example.session4.model.dto.requestDto.InstructorCreateRequest;
 import com.example.session4.model.dto.responseDto.InstructorResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,10 @@
-package com.example.session4.Service;
+package com.example.session4.service;
 
-import com.example.session4.Repository.StudentRepo;
+import com.example.session4.repository.StudentRepo;
 import com.example.session4.model.dto.requestDto.StudentCreateRequest;
 import com.example.session4.model.entity.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
