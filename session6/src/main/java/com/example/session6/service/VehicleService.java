@@ -15,13 +15,10 @@ public class VehicleService {
     private final VehicleRepository vehicleRepository;
 
     public Page<VehicleResponse> getPagedVehicles(int page, int size, String sortBy, String direction, String keyword) {
-
-        // 1. Validate page
         if (page < 0) {
             page = 0;
         }
 
-        // 2. Xử lý sort
         Sort sort = Sort.unsorted();
 
         if (sortBy != null && !sortBy.trim().isEmpty()
@@ -34,9 +31,10 @@ public class VehicleService {
             }
         }
 
-        // 3. Pageable
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return vehicleRepository.findAllByKeyword(keyword, pageable);
     }
+
+
 }
