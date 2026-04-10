@@ -1,13 +1,14 @@
 package com.example.session8.service;
 
 import com.example.session8.model.dto.request.BookCreateDTO;
+import com.example.session8.model.dto.request.BookUpdateDTO;
 import com.example.session8.model.entity.Book;
 import com.example.session8.repository.BookRepository;
+import com.example.session8.validator.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +19,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
+
+    public Book findById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy sách với id = " + id));
+    }
 
     public Book createBook(BookCreateDTO req) {
         try {
@@ -47,5 +53,11 @@ public class BookService {
         } catch (IOException e) {
             throw new RuntimeException("Upload file lỗi");
         }
+    }
+
+    public Book updateBook(Long id, BookUpdateDTO req) {
+        Book oldBook = findById(id);
+        oldBook.setStock(req.getStock());
+        return bookRepository.save(oldBook);
     }
 }
