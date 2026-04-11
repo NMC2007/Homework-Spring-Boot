@@ -1,9 +1,9 @@
 package com.example.session9.controller;
 
 import com.example.session9.mapping.MapToAPIResponse;
-import com.example.session9.model.dto.request.DepartmentRequestDTO;
-import com.example.session9.model.entity.Department;
-import com.example.session9.service.DepartmentService;
+import com.example.session9.model.dto.request.EmployeeCreateDTO;
+import com.example.session9.model.entity.Employee;
+import com.example.session9.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/api/employee")
 @RequiredArgsConstructor
-@RequestMapping("/api/department")
-public class DepartmentController {
-    private final DepartmentService departmentService;
+public class EmployeeController {
+    private final EmployeeService employeeService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createDepartment(@Valid @RequestBody DepartmentRequestDTO req) {
-        Department dep = departmentService.createDepartment(req);
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody EmployeeCreateDTO req) {
+        Employee emp = employeeService.createEmployee(req);
 
         return ResponseEntity.ok(
-                MapToAPIResponse.ApiResponse(dep, "SUCCESS", "Tạo mới thành công")
+                MapToAPIResponse.ApiResponse(emp, "SUCCESS", "Tạo mới thành công")
         );
     }
 }
+
