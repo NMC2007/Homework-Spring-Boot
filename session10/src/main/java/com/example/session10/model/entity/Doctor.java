@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "doctors")
@@ -50,4 +51,7 @@ public class Doctor {
     @Builder.Default
     @Column(nullable = false)
     private Boolean active = true;
+
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointment;
 }

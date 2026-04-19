@@ -1,6 +1,5 @@
 package com.example.session8.validator;
 
-import com.example.session8.model.dto.request.BookUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
