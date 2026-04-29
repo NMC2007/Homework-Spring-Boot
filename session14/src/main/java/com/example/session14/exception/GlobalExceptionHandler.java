@@ -1,5 +1,7 @@
 package com.example.session14.exception;
 
+import com.example.session14.validator.BadCredentialsExceptionCustom;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,5 +21,12 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(BadCredentialsExceptionCustom.class)
+    public ResponseEntity<?> handleBadCredentials(BadCredentialsExceptionCustom ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ex.getMessage());
     }
 }
