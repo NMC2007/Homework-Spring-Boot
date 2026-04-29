@@ -30,9 +30,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO req) {
-
-        UserPrincipal user = authService.loginByUserNameAndPassword(req);
-
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(authService.loginByUserNameAndPassword(req));
     }
 }
