@@ -1,6 +1,7 @@
 package com.example.session14.config.Jwt;
 
 
+import com.example.session14.validator.JwtExceptionCustom;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,29 +45,25 @@ public class JwtService {
     }
 
 //    xác minh token hợp lệ
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getKey())
-                    .build()
-                    .parseClaimsJws(token);
+public void validateToken(String token) {
+    try {
+        Jwts.parserBuilder()
+                .setSigningKey(getKey())
+                .build()
+                .parseClaimsJws(token);
 
-            return true;
-
-        } catch (ExpiredJwtException e) {
-            System.out.println("Token hết hạn");
-        } catch (UnsupportedJwtException e) {
-            System.out.println("Token không được hỗ trợ");
-        } catch (MalformedJwtException e) {
-            System.out.println("Token không đúng định dạng");
-        } catch (SignatureException e) {
-            System.out.println("Chữ ký không hợp lệ (sai secret key)");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Token rỗng hoặc null");
-        }
-
-        return false;
+    } catch (ExpiredJwtException e) {
+        throw new JwtExceptionCustom("Token hết hạn");
+    } catch (UnsupportedJwtException e) {
+        throw new JwtExceptionCustom("Token không được hỗ trợ");
+    } catch (MalformedJwtException e) {
+        throw new JwtExceptionCustom("Token không đúng định dạng");
+    } catch (SignatureException e) {
+        throw new JwtExceptionCustom("Chữ ký không hợp lệ");
+    } catch (IllegalArgumentException e) {
+        throw new JwtExceptionCustom("Token rỗng hoặc null");
     }
+}
 
 //    giải mã token
     public String getUsernameFromToken(String token) {

@@ -1,5 +1,6 @@
 package com.example.session14.config.Jwt;
 
+import com.example.session14.validator.JwtExceptionCustom;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -20,18 +23,48 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
+
         String token = getTokenFromRequest(request);
-        if (token != null && jwtService.validateToken(token)) {
-            String username = jwtService.getUsernameFromToken(token);
 
-            UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+        try {
+            if (token != null) {
 
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(username, null, userDetail.getAuthorities())
+                jwtService.validateToken(token);
+
+                String username = jwtService.getUsernameFromToken(token);
+
+                UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetail,
+                                null,
+                                userDetail.getAuthorities()
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+            filterChain.doFilter(request, response);
+
+        } catch (JwtExceptionCustom ex) {
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+
+            response.getWriter().write(
+                    new ObjectMapper().writeValueAsString(
+                            Map.of(
+                                    "code", "TOKEN_ERROR",
+                                    "message", ex.getMessage()
+                            )
+                    )
             );
         }
-        filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
