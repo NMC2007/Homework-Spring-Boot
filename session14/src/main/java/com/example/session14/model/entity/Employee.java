@@ -21,5 +21,6 @@ public class Employee {
 
     private String fullName;
     private Double salary;
+    private String urlAvatar;
 }
 
