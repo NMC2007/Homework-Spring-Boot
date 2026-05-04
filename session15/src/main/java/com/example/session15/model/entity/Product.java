@@ -6,27 +6,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
-public class User {
+public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String phone;
+    @Column(nullable = false)
+    private String name;
+
+    private String description;
 
     @Column(nullable = false)
-    private String password;
+    private BigDecimal price;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+    private String size;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    private String toppings;
 }
